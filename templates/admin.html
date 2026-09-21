@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Panel - AI Resume Screening</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 9px;
+            background: #111827;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn.secondary {
+            background: white;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        /* SUMMARY */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .summary-title {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #111827;
+        }
+
+        /* TABLE */
+
+        .table-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .table-header {
+            padding: 22px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-header h2 {
+            margin: 0 0 5px;
+        }
+
+        .table-header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 15px;
+            font-size: 13px;
+            color: #4b5563;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .candidate-id {
+            background: #111827;
+            color: white;
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .candidate-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .email {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .phone {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        /* SKILLS */
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            max-width: 300px;
+        }
+
+        .skill {
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* RESUME */
+
+        .resume-file {
+            background: #f3f4f6;
+            padding: 7px 10px;
+            border-radius: 7px;
+            display: inline-block;
+            font-size: 12px;
+            word-break: break-word;
+        }
+
+        /* DATE */
+
+        .date {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            margin-top: 25px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Admin Panel
+            </h1>
+
+            <p>
+                Manage and review analyzed resumes
+            </p>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a href="/dashboard"
+               class="btn secondary">
+
+                Dashboard
+
+            </a>
+
+
+            <a href="/"
+               class="btn">
+
+                Upload Resume
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Total Candidates
+            </div>
+
+            <div class="summary-value"
+                 id="candidateCount">
+
+                {{ candidates|length }}
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                System Status
+            </div>
+
+            <div class="summary-value">
+
+                Active
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Screening System
+            </div>
+
+            <div class="summary-value">
+
+                AI Enabled
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search candidate by name, email, phone or skills..."
+            onkeyup="searchCandidates()"
+        >
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-card">
+
+
+        <div class="table-header">
+
+            <h2>
+                Candidate Records
+            </h2>
+
+            <p>
+                Resume information stored in the system database
+            </p>
+
+        </div>
+
+
+        {% if candidates %}
+
+        <div class="table-wrapper">
+
+            <table id="candidateTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Candidate
+                        </th>
+
+                        <th>
+                            Skills
+                        </th>
+
+                        <th>
+                            Education
+                        </th>
+
+                        <th>
+                            Experience
+                        </th>
+
+                        <th>
+                            Resume
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for candidate in candidates %}
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td>
+
+                            <span class="candidate-id">
+                                #{{ candidate.id }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- CANDIDATE -->
+
+                        <td>
+
+                            <div class="candidate-name">
+
+                                {{ candidate.name }}
+
+                            </div>
+
+                            <div class="email">
+
+                                {{ candidate.email }}
+
+                            </div>
+
+                            <div class="phone">
+
+                                {{ candidate.phone }}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- SKILLS -->
+
+                        <td>
+
+                            <div class="skills">
+
+                                {% if candidate.skills %}
+
+                                    {% for skill in candidate.skills.split(",") %}
+
+                                        {% if skill.strip() %}
+
+                                            <span class="skill">
+
+                                                {{ skill.strip() }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <span>
+                                        No skills detected
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EDUCATION -->
+
+                        <td>
+
+                            {% if candidate.education %}
+
+                                {{ candidate.education }}
+
+                            {% else %}
+
+                                Not found
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- EXPERIENCE -->
+
+                        <td>
+
+                            {% if candidate.experience %}
+
+                                {{ candidate.experience }}
+
+                            {% else %}
+
+                                Not found
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- RESUME -->
+
+                        <td>
+
+                            <span class="resume-file">
+
+                                {{ candidate.resume_file }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <span class="date">
+
+                                {{ candidate.created_at }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📄
+            </div>
+
+            <h3>
+                No Candidates Yet
+            </h3>
+
+            <p>
+                Upload a resume to create the first candidate record.
+            </p>
+
+            <a href="/" class="btn">
+                Upload Resume
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+    <div class="footer">
+
+        AI Resume Screening & Job Recommendation System
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+function searchCandidates() {
+
+    const input =
+        document.getElementById("searchInput");
+
+    const filter =
+        input.value.toLowerCase();
+
+    const table =
+        document.getElementById("candidateTable");
+
+    if (!table) {
+        return;
+    }
+
+    const rows =
+        table.getElementsByTagName("tbody")[0]
+            .getElementsByTagName("tr");
+
+
+    for (let i = 0; i < rows.length; i++) {
+
+        const rowText =
+            rows[i].textContent.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

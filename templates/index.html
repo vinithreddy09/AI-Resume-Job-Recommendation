@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Screening System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            AI Resume Screening
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+        </nav>
+    </header>
+
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                AI-Based Resume Screening
+                <span>& Job Recommendation</span>
+            </h1>
+
+            <p>
+                Upload your resume and let our AI analyze your
+                skills and recommend suitable job opportunities.
+            </p>
+
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+
+                <div class="upload-box">
+
+                    <h2>Upload Your Resume</h2>
+
+                    <p>
+                        Supported formats: PDF, DOCX
+                    </p>
+
+                    <input
+                        type="file"
+                        name="resume"
+                        accept=".pdf,.docx"
+                        required
+                    >
+
+                    <button type="submit">
+                        Analyze Resume
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <section id="features" class="features">
+
+        <h2>System Features</h2>
+
+        <div class="feature-container">
+
+            <div class="feature-card">
+                <h3>📄 Resume Analysis</h3>
+                <p>
+                    Automatically extract important information
+                    from uploaded resumes.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>🤖 AI Matching</h3>
+                <p>
+                    Compare your resume with job descriptions
+                    using AI and NLP techniques.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>💼 Job Recommendation</h3>
+                <p>
+                    Find jobs that best match your skills
+                    and qualifications.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>📊 Match Score</h3>
+                <p>
+                    Get a percentage score showing how well
+                    your resume matches each job.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section id="about" class="about">
+
+        <h2>About the Project</h2>
+
+        <p>
+            This system uses Natural Language Processing and
+            Machine Learning techniques to analyze resumes,
+            identify relevant skills, compare candidates with
+            job requirements, and recommend suitable jobs.
+        </p>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 AI Resume Screening & Job Recommendation System
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
